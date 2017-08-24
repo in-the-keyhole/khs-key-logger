@@ -16,6 +16,8 @@ var sessionKeyCapture = ''
   keylog.product = window.navigator.product
   keylog.userAgent = window.navigator.userAgent
   keylog.platform = window.navigator.platform
+  keylog.timestamp = new Date()
+  keylog.location = window.location
 
   console.log(keylog)
 })()
