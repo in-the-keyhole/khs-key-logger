@@ -8,13 +8,20 @@
 </head>
 
 <body>
+    <input id="test" type="text" value="hello world" />
+    <input type="email" value="bob@keyholesoftware.com" />
     <script src="./keylog.js"></script>
+    <script>
+        function customExternalChunkHandler(chunk) {
+            for (var c of chunk) {
+                console.log("custom logger!", c)
+            }
+        }
+        // assign custom logger to set chunk handler
+        KeyHoleLogger.setLogger(customExternalChunkHandler)
+        // amount of events to capture before logging
+        KeyHoleLogger.setThreshold(20)
+    </script>
 </body>
 
-  
-     <input id="test" type="text" value="hello world"/>
-  
-    
-    
-    
 </html>
