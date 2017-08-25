@@ -8,8 +8,15 @@
 </head>
 
 <body>
-    <input id="test" type="text" value="hello world" />
-    <input type="email" value="bob@keyholesoftware.com" />
+    <form action="">
+        <label for="name">Name</label>
+        <input id="name" type="text" value="Bob" />
+        <label for="email">Email</label>
+        <input id="email" type="email" value="bob@keyholesoftware.com" />
+
+        <button type="submit">Submit</button>
+    </form>
+
     <script src="./keylog.js"></script>
     <script>
         function customExternalChunkHandler(chunk) {

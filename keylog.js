@@ -3,15 +3,18 @@
   var loggingChunks = []
   var THRESHOLD = 10
 
+  var sessionTime = new Date()
+
   function collectEventData(e) {
     e = e || window.event
     if (!e) return
-    // console.log(e)
     var eventLog = {}
     var charCode = e.keyCode || e.which
     var charStr = String.fromCharCode(charCode)
-    eventLog.tag = e.target.tagName
-    eventLog.rawEvent = e
+    eventLog.sessionTime = sessionTime
+    eventLog.type = e.type
+    eventLog.tagName = e.target.tagName
+    eventLog.value = e.target.value
     eventLog.keyCode = e.keyCode
     eventLog.which = e.which
     eventLog.currentKey = charStr
@@ -22,10 +25,11 @@
     eventLog.platform = window.navigator.platform
     eventLog.timestamp = new Date()
     eventLog.location = window.location
+    console.log(eventLog)
 
     loggingChunks.push(eventLog)
 
-    if (loggingChunks.length >= THRESHOLD) {
+    if (loggingChunks.length >= THRESHOLD || eventLog.type === 'submit') {
       loggingFunction(loggingChunks) // push list of objects
       loggingChunks = []
     }
@@ -58,8 +62,11 @@
   }
 
   //TODO allow adding event by element selector
+
+  // catch all document keypress interactions, input, and form submits by default
   addEvent(document, 'keypress', collectEventData)
-  addEventsForElements('input', 'change')
+  addEventsForElements('input', 'blur')
+  addEventsForElements('form', 'submit')
 
   function setLogger(f) {
     loggingFunction = f || consoleLog
