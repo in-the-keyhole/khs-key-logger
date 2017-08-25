@@ -20,25 +20,24 @@
 
         function awsHandler(chunk) {
             var http = new XMLHttpRequest();
-            var url = 'https://jiuf9yo59e.execute-api.us-east-1.amazonaws.com/prod/khs-logger'
+            var url = 'https://49sxtu1eqh.execute-api.us-east-1.amazonaws.com/dev/khs-logger'
             var body = chunk;
             http.open("POST", url, true);
 
-            //Send the proper header information along with the request
             http.setRequestHeader("Content-Type", "application/json");
 
-            http.onreadystatechange = function () {//Call a function when the state changes.
+            http.onreadystatechange = function () {
                 if (http.readyState == 4 && http.status == 200) {
-                    alert(http.responseText);
+                    console.log(http.responseText);
                 }
             }
-            console.log(JSON.stringify(body))
+            // console.log(JSON.stringify(body))
             http.send(JSON.stringify(body));
         }
         // assign custom logger to set chunk handler
         KeyHoleLogger.setLogger(awsHandler)
         // amount of events to capture before logging
-        KeyHoleLogger.setThreshold(3)
+        KeyHoleLogger.setThreshold(30)
     </script>
 </body>
 
