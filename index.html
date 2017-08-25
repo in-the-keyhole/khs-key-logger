@@ -40,6 +40,7 @@
                 if (http.readyState == 4 && http.status == 200) {
                     console.log(http.responseText);
                 }
+                // TODO this is lame, need to figure out a cleaner interface, maybe Promise
                 if (e && cb) {
                     cb(e);
                 }
