@@ -19,13 +19,16 @@
 
     <script src="./keylog.js"></script>
     <script>
-        function customExternalChunkHandler(chunk) {
+        function customExternalChunkHandler(chunk, e, cb) {
             for (var c of chunk) {
                 console.log("custom logger!", c)
             }
+            if (e && cb) {
+                cb(e);
+            }
         }
 
-        function awsHandler(chunk) {
+        function awsHandler(chunk, e, cb) {
             var http = new XMLHttpRequest();
             var url = 'https://49sxtu1eqh.execute-api.us-east-1.amazonaws.com/dev/khs-logger'
             var body = chunk;
@@ -36,6 +39,9 @@
             http.onreadystatechange = function () {
                 if (http.readyState == 4 && http.status == 200) {
                     console.log(http.responseText);
+                }
+                if (e && cb) {
+                    cb(e);
                 }
             }
             // console.log(JSON.stringify(body))

@@ -4,8 +4,12 @@
   var THRESHOLD = 10
 
   var sessionTime = new Date()
-
+  var currentEvent = null
   function collectEventData(e) {
+    if (e.type === 'submit') {
+      e.preventDefault()
+    }
+    currentEvent = e
     e = e || window.event
     if (!e) return
     var eventLog = {}
@@ -27,15 +31,30 @@
     eventLog.location = window.location
     console.log(eventLog)
 
+    if (eventLog.type === 'submit') {
+      // let's see how long it took them to fill out form
+      var time = eventLog.timestamp - sessionTime
+      //make readable
+      var seconds = parseInt(time / 1000)
+      eventLog.formFilloutSeconds = seconds
+    }
+
     loggingChunks.push(eventLog)
 
+    // want to purge events on submit because of postback
     if (loggingChunks.length >= THRESHOLD || eventLog.type === 'submit') {
-      loggingFunction(loggingChunks) // push list of objects
+      loggingFunction(loggingChunks, e, formHandler) // push list of objects
       loggingChunks = []
     }
   }
 
-  function consoleLog(events) {
+  function formHandler(e) {
+    if (e.type === 'submit') {
+      e.target.submit()
+    }
+  }
+
+  function consoleLog(events, handler) {
     if (!events) return
     for (var event of events) {
       console.log(event)
